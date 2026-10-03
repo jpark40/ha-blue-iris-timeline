@@ -1,0 +1,47 @@
+# Merge this top-level block into your existing /config/configuration.yaml.
+# MQTT must already be configured in Settings > Devices & services.
+blue_iris_timeline:
+  directory: /media/blue_iris_timeline
+  mqtt_topic: blueiris/timeline
+  retention_days: 30
+  max_storage_mb: 2048
+
+  # Optional: map Blue Iris camera SHORT names to friendly display names.
+  # Replace these examples with the actual names from Blue Iris before enabling.
+  # camera_names:
+  #   FrontRight: Front Right
+  #   FrontLeft: Front Left
+  #   BackYard: Back Yard
+
+  # Optional: override ONE category's label list. Other categories keep defaults.
+  # Include all labels you want in the overridden category.
+  # labels:
+  #   animals: [cat, dog, bird, deer, raccoon, skunk, coyote, rabbit, squirrel]
+
+# Merge into /config/configuration.yaml under your existing mqtt: block.
+# Do not create a second mqtt:, sensor:, or binary_sensor: key at the same level.
+# These topics match the lowercase blueiris/app shown in your BI log.
+mqtt:
+  sensor:
+    - name: Blue Iris Status
+      unique_id: blue_iris_app_status
+      state_topic: blueiris/app
+      value_template: "{{ value | trim | lower }}"
+      icon: mdi:cctv
+      entity_category: diagnostic
+      qos: 1
+      # No expire_after: app status is published on transitions, not every 20s.
+
+  binary_sensor:
+    - name: Blue Iris MQTT Heartbeat
+      unique_id: blue_iris_mqtt_heartbeat
+      state_topic: blueiris/keepalive
+      device_class: connectivity
+      entity_category: diagnostic
+      value_template: "{{ 'ON' }}"
+      payload_on: "ON"
+      payload_off: "OFF"
+      off_delay: 90
+      qos: 1
+      # Set BI MQTT Publish / keepalive to 20 seconds.
+      # Even an empty keepalive payload sets ON; 90s without another sets OFF.

@@ -1,0 +1,16 @@
+{
+  "domain": "blue_iris_timeline",
+  "name": "Blue Iris AI Timeline",
+  "version": "1.1.1",
+  "documentation": "https://github.com/jpark40/ha-blue-iris-timeline",
+  "dependencies": [
+    "http",
+    "mqtt"
+  ],
+  "codeowners": [
+    "@jpark40"
+  ],
+  "requirements": [],
+  "iot_class": "local_push",
+  "issue_tracker": "https://github.com/jpark40/ha-blue-iris-timeline/issues"
+}
